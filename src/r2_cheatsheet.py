@@ -9,6 +9,13 @@ s- [expr]    : Seek relative negative
 so [N]       : Seek N opcodes
 sf           : Seek to next function
 
+=== Visual Mode ===
+V            : Enter visual mode
+VV           : Enter visual graph mode
+p/P          : Cycle through representation modes (hex, disasm, debug)
+_ (HUD)      : Interactive HUD for commands
+?            : Help menu in visual mode
+
 === Analysis ===
 aa           : Analyze all (basic)
 aaa          : Analyze all (autoname, references, etc.)
@@ -42,6 +49,12 @@ dr=          : Read CPU registers (columns)
 wx [hex]     : Write hex bytes at current seek
 wa [asm]     : Write assembly at current seek
 wc           : Write cache (commit patches)
+
+=== Advanced (ESIL / Macros) ===
+ae           : Evaluate ESIL expression
+(macro ...)  : Define a macro
+$            : List defined aliases
+z            : Signatures management
 
 === Search ===
 / [str]      : Search for string

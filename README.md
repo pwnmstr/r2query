@@ -20,9 +20,9 @@ $H
 
 To search for a specific keyword or basic task:
 ```
-$H "seek"
-$H "patch"
-$H "info"
+$H seek
+$H patch
+$H info
 ```
 
 The script works fully offline and is directly integrated into your Radare2 session via native `r2` alias bindings and a Python search engine.

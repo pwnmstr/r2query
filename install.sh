@@ -9,17 +9,22 @@ mkdir -p ~/.config/radare2/
 cp src/r2_cheatsheet.py ~/.local/share/radare2/r2_cheatsheet.py
 chmod +x ~/.local/share/radare2/r2_cheatsheet.py
 
-# Add the macro mapping to radare2rc
-if grep -q "r2_cheatsheet" ~/.config/radare2/radare2rc 2>/dev/null; then
-    sed -i '/r2_cheatsheet/d' ~/.config/radare2/radare2rc
-    sed -i '/H=/d' ~/.config/radare2/radare2rc
-fi
+# Create a robust shell wrapper that handles radare2 alias argument passing safely
+cat << 'INNER' > ~/.local/share/radare2/r2_cheatsheet.sh
+#!/bin/sh
+python3 ~/.local/share/radare2/r2_cheatsheet.py "$@"
+INNER
+chmod +x ~/.local/share/radare2/r2_cheatsheet.sh
 
-# The cleanest way to pass optional arguments into Python using radare2 is to
-# execute python using an alias mapping `!python3` to radare2's `sys.argv`.
-# However, Radare2 handles the string differently on different execution environments
-# Let's map it into a generic shell call.
-echo "\$H=!python3 ~/.local/share/radare2/r2_cheatsheet.py" | sed 's|~|'$HOME'|g' >> ~/.config/radare2/radare2rc
+# Temporary file approach to avoid bsd/gnu sed -i incompatibilities
+cp ~/.config/radare2/radare2rc ~/.config/radare2/radare2rc.tmp 2>/dev/null || touch ~/.config/radare2/radare2rc.tmp
+sed '/r2_cheatsheet/d' ~/.config/radare2/radare2rc.tmp > ~/.config/radare2/radare2rc
+
+# Write the final alias mapping
+echo "\$H=!~/.local/share/radare2/r2_cheatsheet.sh" | sed 's|~|'$HOME'|g' >> ~/.config/radare2/radare2rc
+
+# Cleanup
+rm -f ~/.config/radare2/radare2rc.tmp
 
 echo "Cheatsheet helper installed successfully!"
 echo "Open radare2 and try:"
